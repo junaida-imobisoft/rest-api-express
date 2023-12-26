@@ -28,5 +28,6 @@ jobs:
           
        - name: Start
          run: |
+           cd $HOME/site/wwwroot
            npm install
            npm start
