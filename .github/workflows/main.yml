@@ -6,23 +6,27 @@ on:
       - main
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '14'
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Deploy to Azure App Service
+         uses: azure/webapps-deploy@v3
+         with:
+          app-name: Node-test-011
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: .  # Adjust this path based on your build output
           
-      - name: Install dependencies and Deploy to Azure App Service
-        run: |
-          npm install
-          npm run start  # Adjust the start command based on your application
-          echo "Successfully installed dependencies and deployed to Azure App Service"
-        env:
-          AZURE_WEBAPP_NAME: Node-test-011
-          AZURE_PUBLISH_PROFILE: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+       - name: Start
+         run: |
+           npm install
+           npm start
