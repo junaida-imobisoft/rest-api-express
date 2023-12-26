@@ -6,13 +6,20 @@ on:
       - main
 
 jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
   deploy:
     runs-on: ubuntu-latest
     steps:
-       - name: Setup Node.js
-         uses: actions/setup-node@v3
-       - name: Install Dependencies
-         run: npm install
+       
        - name: Deploy to Azure App Service
          uses: azure/webapps-deploy@v3
          with:
